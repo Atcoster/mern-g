@@ -1,0 +1,49 @@
+@import '~scss/abstracts/variables/colors';
+
+.auth-form {
+	margin: 0 auto;
+	padding: 0.5rem;
+
+	input {
+		background-color: $gray--light !important;
+		border: $gray 1px solid;
+		color: $gray--dark;
+		padding: 0.6rem;
+		border-radius: 0.2rem;
+		margin-bottom: 0.2rem;
+		width: 100%;
+
+		&:nth-child(2) {
+			margin-bottom: 0;
+		}
+	}
+
+	&__actions {
+		button {
+			width: 100%;
+			padding: 0.7rem;
+			color: white;
+			border-radius: 0.2rem;
+			border: transparent 1px solid;
+			cursor: pointer;
+			margin-top: 0.2rem;
+
+			&.signup {
+				background: $blue;
+				border-color: $blue;
+
+				&:hover {
+					background: $blue--dark;
+				}
+			}
+
+			&.submit {
+				background: $green--light;
+				border: $green--light;
+				&:hover {
+					background: $green--dark;
+				}
+			}
+		}
+	}
+}
