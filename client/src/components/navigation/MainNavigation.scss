@@ -1,29 +1,31 @@
-@import "~scss/abstracts/variables/colors";
+@import '~scss/abstracts/variables/colors';
 
-header {
-	position: fixed;
-	left: 0;
-	top: 0;
-	height: 4.5rem;
-	width: 100%;
-	background: $blue;
-	padding: 0 1rem;
-	display: flex;
-	align-items: center;
-
-	.logo {
+.main {
+	&-header {
+		position: fixed;
+		left: 0;
+		top: 0;
+		height: 4.5rem;
+		width: 100%;
+		background: $blue;
+		padding: 0 1rem;
 		display: flex;
-		height: 100%;
 		align-items: center;
 
-		span {
-			font-size: 1.5em;
-			font-weight: 700;
-			color: $white;
+		.logo {
+			display: flex;
+			height: 100%;
+			align-items: center;
+
+			span {
+				font-size: 1.5em;
+				font-weight: 700;
+				color: $white;
+			}
 		}
 	}
 
-	.main-navigation {
+	&-navigation {
 		height: 100%;
 		margin-left: 1.5rem;
 
@@ -32,6 +34,7 @@ header {
 			height: 100%;
 		}
 
+		button,
 		a {
 			display: flex;
 			height: 100%;

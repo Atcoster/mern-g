@@ -1,0 +1,34 @@
+@import '~scss/abstracts/variables/colors';
+
+.modal {
+	width: 70vw;
+	background-color: $white;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+	position: fixed;
+	top: 20vh;
+	left: 15vw;
+
+	&__header {
+		background: $blue;
+		color: $white;
+
+		& h1 {
+			font-size: 1.25rem;
+			padding: 0.5rem;
+		}
+	}
+
+	&__actions,
+	&__content {
+		padding: 1rem;
+	}
+
+	&__actions {
+		display: flex;
+		justify-content: flex-end;
+
+		.btn:nth-child(even) {
+			margin: 0 0.5rem;
+		}
+	}
+}

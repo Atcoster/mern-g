@@ -1,0 +1,12 @@
+@import '~scss/abstracts/variables/colors';
+
+.events-control {
+	text-align: center;
+	border: 1px solid $blue;
+	padding: 1rem;
+	margin: 2rem auto;
+
+	& p {
+		margin-bottom: 1rem;
+	}
+}

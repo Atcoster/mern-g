@@ -1,17 +1,37 @@
-import React, { Component, createRef, RefObject } from 'react';
+import React, { createRef, RefObject, PureComponent } from 'react';
+
+import AppContext from '../../context/auth-context';
 
 import './Auth.scss';
 
-class AuthPage extends Component {
+interface IProps {}
+
+interface IState {
+	isLogin: boolean;
+}
+
+class AuthPage extends PureComponent<IProps, IState> {
 	private readonly _emailRef: RefObject<HTMLInputElement>;
 	private readonly _passwordRef: RefObject<HTMLInputElement>;
+
+	static contextType = AppContext;
 
 	constructor(props: any) {
 		super(props);
 
 		this._emailRef = createRef<HTMLInputElement>();
 		this._passwordRef = createRef<HTMLInputElement>();
+
+		this.state = {
+			isLogin: true
+		};
 	}
+
+	switchModeHandler = () => {
+		this.setState(prevState => {
+			return { isLogin: !prevState.isLogin };
+		});
+	};
 
 	submithandler = (event: any) => {
 		event.preventDefault();
@@ -24,25 +44,53 @@ class AuthPage extends Component {
 			return;
 		}
 
-		const requestBody = {
+		let requestBody = {
 			query: `
-				mutation {
-					createUserInput: (userInput: {email: "${email}", password: "${password}"}) {
-						_id
-						email
+				query {
+					login(email: "${email}", password: "${password}") {
+						userId
+						token
+						tokenExpiration
 					}
 				}
 			`
 		};
 
-		fetch('http:localhost:3001/graphql'),
-			{
-				method: 'POST',
-				body: JSON.stringify(requestBody),
-				headers: {
-					'Content-Type': 'application / json'
-				}
+		if (!this.state.isLogin) {
+			requestBody = {
+				query: `
+					mutation {
+						createUser(userInput: {email: "${email}", password: "${password}"}) {
+							_id
+							email
+						}
+					}
+				`
 			};
+		}
+
+		fetch('http://localhost:3001/graphql', {
+			method: 'POST',
+			body: JSON.stringify(requestBody),
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		})
+			.then(res => {
+				if (res.status !== 200 && res.status !== 201) {
+					throw new Error('Failed');
+				}
+
+				return res.json();
+			})
+			.then(resData => {
+				if (resData.data.login.token) {
+					this.context.login(resData.data.login.token, resData.data.login.userId, resData.data.login.tokenExpiration);
+				}
+			})
+			.catch(err => {
+				console.log(err);
+			});
 	};
 
 	render() {
@@ -54,8 +102,8 @@ class AuthPage extends Component {
 					<button className="submit" type="submit">
 						Submit
 					</button>
-					<button className="signup" type="button">
-						Signup
+					<button className="signup" type="button" onClick={this.switchModeHandler}>
+						Switch to {this.state.isLogin ? 'Signup' : 'Login'}
 					</button>
 				</div>
 			</form>
